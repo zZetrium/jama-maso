@@ -1,4 +1,4 @@
-import { Application, Graphics } from "pixi.js";
+import { Application, Assets, Graphics, Matrix, Texture } from "pixi.js";
 import { HEIGHT, WIDTH } from "./tetris";
 
 const is_key_down = (() => {
@@ -50,24 +50,27 @@ async function init() {
     }
   });*/
 
+  let size = 10;
+
   for (let i = 0; i < WIDTH; i++) {
     for (let j = 0; j < HEIGHT; j++) {
       let field = new Graphics()
-        .rect(0, 0, 10, 10)
+        .rect(i * size, j * size, size, size)
         .stroke({
           width: 2,
-          color: 0xff0000
+          color: 0xffffff
         })
-        ..fill({
-        color: 0x00ff00,
+        .fill({
+        color: 0xffffff,
         alpha: 0.5,
-        texture: myTexture,
+        texture: await Assets.load("https://static.wikia.nocookie.net/portalworldsgame/images/e/e7/Concrete_Block_2x2.png/revision/latest?cb=20190610131137"),
         matrix: new Matrix()
     });
+    app.stage.addChild(field);
     }
   }
 
-  const gameMap = new Graphics();
+  //const gameMap = new Graphics();
   app.ticker.add(() => {
 
   });

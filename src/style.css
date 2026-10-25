@@ -82,6 +82,57 @@ button:active {
   transform: scale(0.98);
 }
   */
-  body {
+ /* body {
     margin: 0;
-  }
+  }*/
+/*html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow: clip;
+}*/
+
+body {
+  overflow: hidden;
+  background-color: #111827;
+}
+
+.board {
+  /*--cell-size: min(4.5vh, 4.5vw, 28px);*/
+
+  /*display: grid;
+  grid-template-columns: repeat(10, var(--cell-size));
+  grid-template-rows: repeat(20, var(--cell-size));
+  gap: 1px;*/
+
+  padding: 4px;
+  background: #111827;
+  border: 2px solid #374151;
+  border-radius: 4px;
+}
+
+.fill {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+#root {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 5%;
+}
+
+/*.cell.filled {
+  background: var(--block-color);
+  box-shadow: inset 0 0 0 1px #ffffff30;
+}*/

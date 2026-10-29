@@ -23,6 +23,18 @@ export class Game {
     }
   }
 
+  move_left() {
+    if (this.cur_pos[0] > 0) {
+      this.cur_pos[0]--;
+    }
+  }
+
+   move_right() {
+    if (this.cur_pos[0] < WIDTH-1) {
+      this.cur_pos[0]++;
+    }
+  }
+
   collides(): boolean {
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {

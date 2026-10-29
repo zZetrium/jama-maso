@@ -28,10 +28,10 @@ async function init() {
   setInterval(() => {
     for (let i = 0; i < TEAM_COUNT; i++) {
       if(is_key_down("a")) {
-        games[i].cur_pos[0] -= 1;
+        games[i].move_left();
       }
        if(is_key_down("d")) {
-        games[i].cur_pos[0] += 1;
+        games[i].move_right();
       }
       games[i].tick();
       updates[i](games[i]);

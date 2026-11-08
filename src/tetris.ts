@@ -9,7 +9,11 @@ export enum Field {
 export class Game {
   fields: Field[][] = new Array(WIDTH).fill(false).map(() => new Array(HEIGHT).fill(Field.Empty));
   cur_piece: Field[][] = new Array(4).fill(false).map(() => new Array(4).fill(Field.Empty));
-  cur_pos: [number, number] = [0, -1];
+  //cur_pos: [number, number] = [0, -];
+  cur_x: number = 0;
+  cur_y: number = -1;
+  score:number = 0;
+  actions:number = 0;
 
   constructor() {
     this.new_piece();
@@ -24,28 +28,86 @@ export class Game {
   }
 
   move_left() {
-    if (this.cur_pos[0] > 0) {
-      this.cur_pos[0]--;
+    this.move(-1);
+  }
+
+  move(size: number) {
+    /* for (let i = 0; i < 4; i++) {
+       if (this.cur_x + i + size < 0 || this.cur_x + i + size >= WIDTH) {
+         for (let j = 0; j < 4; j++) {
+           if (this.cur_piece[i][j] == Field.Filled) {
+             return;
+           }
+         }
+       }
+     }*/
+    this.cur_x += size;
+    if (this.collides_or_oob()) {
+      this.cur_x -= size;
     }
   }
 
-   move_right() {
-    if (this.cur_pos[0] < WIDTH-1) {
-      this.cur_pos[0]++;
+  move_right() {
+    this.move(1);
+  }
+
+  rotate_cw() {
+    rotateCw(this.cur_piece);
+    if (this.collides_or_oob()) {
+      rotateCcw(this.cur_piece);
     }
+  }
+
+  rotate_ccw() {
+    rotateCcw(this.cur_piece);
+    if (this.collides_or_oob()) {
+      rotateCw(this.cur_piece);
+    }
+  }
+
+  move_down() {
+    do {
+      this.cur_y++;
+    } while (!this.collides_or_oob());
+    this.cur_y--;
+  }
+  move_up() {
+    do {
+      this.cur_y--;
+    } while (!this.collides_or_oob());
+    this.cur_y++;
+  }
+
+  collides_or_oob() {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (this.cur_piece[i][j] == Field.Filled) {
+          if (this.cur_x + i < 0 || this.cur_x + i >= WIDTH || this.cur_y + j < 0 || this.cur_y + j >= HEIGHT) {
+            return true;
+          }
+          let field_at_pos = this.fields[this.cur_x + i][this.cur_y + j];
+          if (field_at_pos == undefined || field_at_pos == Field.Filled) {
+            return true;
+
+          }
+        }
+      }
+    }
+    return false;
   }
 
   collides(): boolean {
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (this.cur_piece[i][j] == Field.Filled) {
-          let field_at_pos = this.fields[this.cur_pos[0] + i][this.cur_pos[1] + j];
+          //console.log(this.cur_x + i, this.cur_y + j);
+          let field_at_pos = this.fields[this.cur_x + i][this.cur_y + j];
           if (field_at_pos == undefined || field_at_pos == Field.Filled) {
             return true;
 
           }
         }
-        //console.log(this.fields[this.cur_pos[0] + i][this.cur_pos[1] + j]);
+        //console.log(this.fields[this.cur_x + i][this.cur_y + j]);
       }
 
     }
@@ -57,7 +119,7 @@ export class Game {
       this.cur_piece[i].fill(Field.Empty);
     }
     // todo
-    switch (Math.round(Math.random() * 5) % 5) {
+    switch (Math.round(Math.random() * 7) % 7) {
       case 0: {
         this.cur_piece[1][1] = Field.Filled;
         this.cur_piece[1][2] = Field.Filled;
@@ -97,7 +159,14 @@ export class Game {
         this.cur_piece[1][1] = Field.Filled;
         this.cur_piece[1][2] = Field.Filled;
         this.cur_piece[1][3] = Field.Filled;
+        this.cur_piece[2][3] = Field.Filled;
+        break;
+      }
+      case 6: {
+        this.cur_piece[1][1] = Field.Filled;
         this.cur_piece[1][2] = Field.Filled;
+        this.cur_piece[1][3] = Field.Filled;
+        this.cur_piece[2][1] = Field.Filled;
         break;
       }
 
@@ -108,22 +177,76 @@ export class Game {
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (this.cur_piece[i][j] == Field.Filled) {
-          this.fields[this.cur_pos[0] + i][this.cur_pos[1] + j] = Field.Filled;
+          this.fields[this.cur_x + i][this.cur_y + j] = Field.Filled;
         }
       }
     }
   }
 
   tick() {
-    this.cur_pos[1] += 1;
+    this.remove_complete();
+    this.cur_y += 1;
     if (this.collides()) {
-      this.cur_pos[1] -= 1;
+      this.cur_y -= 1;
       this.place();
-      this.cur_pos = [0, -1];
+      this.cur_x = 0;
+      this.cur_y = 0;
       this.new_piece();
+      if (this.collides()) {
+        this.fields = new Array(WIDTH).fill(false).map(() => new Array(HEIGHT).fill(Field.Empty));
+        this.move_up();
+      }
+    }
+  }
+
+  remove_complete() {
+    for (let j = 0; j < HEIGHT; j++) {
+      let complete = true;
+      for (let i = 0; i < WIDTH; i++) {
+        if (this.fields[i][j] == Field.Empty) {
+          complete = false;
+          break;
+        }
+      }
+      if (complete) {
+        this.score++;
+        for (let j2 = j; j2 > 0; j2--) {
+          for (let i = 0; i < WIDTH; i++) {
+            this.fields[i][j2] = this.fields[i][j2 - 1];
+          }
+        }
+      }
     }
   }
 }
+
+// tohle jsem už programoval kvůli leetcodu lol
+function rotateCw<T>(matrix: T[][]): void {
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j <= i; j++) {
+      let original = matrix[i][j];
+      matrix[i][j] = matrix[j][i];
+      matrix[j][i] = original;
+    }
+  }
+  for (let i = 0; i < matrix.length; i++) {
+    matrix[i].reverse();
+  }
+};
+
+function rotateCcw<T>(matrix: T[][]): void {
+  for (let i = 0; i < matrix.length; i++) {
+    matrix[i].reverse();
+  }
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j <= i; j++) {
+      let original = matrix[i][j];
+      matrix[i][j] = matrix[j][i];
+      matrix[j][i] = original;
+    }
+  }
+
+};
 
 
 

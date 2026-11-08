@@ -20,22 +20,23 @@
     let gameid = parseInt(params.get("game_id"));
 </script>
 <style>
-.input {
-    padding: 10px;
-    font-size: large;
-}
+    .input {
+        padding: 10px;
+        font-size: large;
+    }
 </style>
+
 <body>
 
     <div id="app">
-        <button class="input" onclick="perform('game_id='+ gameid+'&action=left')" >doleva</button>
-        <button class="input"onclick="perform('game_id='+ gameid+'&action=right')" >doprava</button>
-        
-        <button class="input"onclick="perform('game_id='+ gameid+'&action=down')" >dolů</button>
+        <button class="input" onclick="perform('game_id='+ gameid+'&action=left')">doleva</button>
+        <button class="input" onclick="perform('game_id='+ gameid+'&action=right')">doprava</button>
+
+        <button class="input" onclick="perform('game_id='+ gameid+'&action=down')">dolů</button>
         <br>
-        <button class="input"onclick="perform('game_id='+ gameid+'&action=rotcw')" >otočit proti
+        <button class="input" onclick="perform('game_id='+ gameid+'&action=rotcw')">otočit proti
             směru</button>
-        <button class="input" onclick="perform('game_id='+ gameid+'&action=rotccw')" >otočit po
+        <button class="input" onclick="perform('game_id='+ gameid+'&action=rotccw')">otočit po
             směru</button>
 
     </div>

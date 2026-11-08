@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>webgame</title>
+</head>
+<style>
+    canvas {
+        object-fit: cover
+    }
+</style>
+
+<link rel="stylesheet" href="src/style.css">
+<script type="module" src="/src/admin.ts"></script>
+<script>
+    let params = new URLSearchParams(document.location.search);
+    let gameid = parseInt(params.get("game_id"));
+</script>
+<style>
+.input {
+    padding: 10px;
+    font-size: large;
+}
+</style>
+<body>
+
+    <div id="app">
+        <button class="input" onclick="perform('game_id='+ gameid+'&action=left')" >doleva</button>
+        <button class="input"onclick="perform('game_id='+ gameid+'&action=right')" >doprava</button>
+        
+        <button class="input"onclick="perform('game_id='+ gameid+'&action=down')" >dolů</button>
+        <br>
+        <button class="input"onclick="perform('game_id='+ gameid+'&action=rotcw')" >otočit proti
+            směru</button>
+        <button class="input" onclick="perform('game_id='+ gameid+'&action=rotccw')" >otočit po
+            směru</button>
+
+    </div>
+    <div id="root">
+
+    </div>
+
+</body>
+
+</html>

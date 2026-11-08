@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>webgame</title>
+</head>
+<style>
+    canvas {
+        object-fit: cover
+    }
+</style>
+
+<link rel="stylesheet" href="src/style.css">
+<script type="module" src="/src/admin.ts"></script>
+
+
+<body>
+
+    <div id="app">
+        <input id="gameid" type="number"></input>
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=freeze')" style="padding: 10px;">freeze</button>
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=unfreeze')" style="padding: 10px;">unfreeze</button>
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=down')" style="padding: 10px;">down</button>
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=right')" style="padding: 10px;">right</button>
+    </div>
+    <div id="root">
+
+    </div>
+
+</body>
+
+</html>

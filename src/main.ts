@@ -13,14 +13,14 @@ const is_key_down = (() => {
 })();
 
 const TEAM_COUNT = 4;
-const UPDATE_INTERVAL = 10;
-const TICK_INTERVAL = 600;
-
+const UPDATE_INTERVAL = 100;
+let server = "";
 async function init() {
+  server = window.prompt("server") ?? "";
   document.body.style.margin = "0";
   let updates: ((game: Game) => void)[] = [];
   for (let index = 0; index < TEAM_COUNT; index++) {
-    let { element: element, update: update } = createDisplay(TEAMS_NAMES[index]);
+    let { element: element, update: update } = await createDisplay(TEAMS_NAMES[index]);
     document.querySelector("#root")?.appendChild(element);
     updates.push(update);
   }
@@ -29,41 +29,47 @@ async function init() {
   for (let i = 0; i < TEAM_COUNT; i++) {
     games.push(new Game());
   }
-  let tick_counter = 0;
-  setInterval(() => {
-    tick_counter += UPDATE_INTERVAL;
+  setInterval(async () => {
     /*while (tick_counter >= TICK_INTERVAL) {
       tick_counter -= TICK_INTERVAL;
       games[i].tick();
     }*/
-    let tick_count = Math.floor(tick_counter / TICK_INTERVAL);
-    tick_counter %= TICK_INTERVAL;
     for (let i = 0; i < TEAM_COUNT; i++) {
-      for (let j = 0; j < tick_count; j++) {
-        games[i].tick();
-      }
+      //games[i].tick();
+      games[i] = await fetch(`${server}?game_id=${i}`).then((response) => response.text()).then(JSON.parse);
+
       updates[i](games[i]);
     }
   }, UPDATE_INTERVAL);
-  window.addEventListener("keydown", (e) => {
+  window.addEventListener("keydown", async (e) => {
     for (let i = 0; i < TEAM_COUNT; i++) {
       if (e.key == "a") {
-        games[i].move_left();
+        await fetch(`${server}?game_id=${i}&action=left`, {
+          method: "POST"
+        });
       }
 
       if (e.key == "d") {
-        games[i].move_right();
+        await fetch(`${server}?game_id=${i}&action=right`, {
+          method: "POST"
+        });
       }
       if (e.key == "s") {
-        games[i].move_down();
+        await fetch(`${server}?game_id=${i}&action=down`, {
+          method: "POST"
+        });
       }
 
       if (e.key == "q") {
-        games[i].rotate_cw();
+        await fetch(`${server}?game_id=${i}&action=rotcw`, {
+          method: "POST"
+        });
       }
 
       if (e.key == "e") {
-        games[i].rotate_ccw();
+        await fetch(`${server}?game_id=${i}&action=rotccw`, {
+          method: "POST"
+        });
       }
 
     }
@@ -79,12 +85,14 @@ function triangleWave(x: number, period: number, offset: number = 0): number {
   return 2 * Math.abs(x / period + offset - Math.floor(x / period + offset + 0.5));
 }
 
-function createDisplay(team_name: string): TetrisDisplay {
+async function createDisplay(team_name: string): Promise<TetrisDisplay> {
   let display = document.createElement("div");
   display.classList.add("display");
 
   let name = document.createElement("div");
   name.innerHTML = team_name;
+  // name.innerHTML = await fetch("${server}hello?keyword=World").then((response) => response.text());
+
   name.classList.add("name");
   display.appendChild(name);
 

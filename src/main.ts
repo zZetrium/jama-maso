@@ -1,7 +1,7 @@
 //import { Application, Assets, Graphics, Matrix, Texture } from "pixi.js";
 import { Field, Game, HEIGHT, WIDTH } from "./tetris";
 
-const TEAMS_NAMES = ["Hovězí", "Kuřecí", "Vepřové", "Jehněčí"];
+const TEAMS_NAMES = ["Hovězí", "Kuřecí", "Vepřové", "Jehněčí","Skopové"];
 
 const is_key_down = (() => {
   const state: Record<string, boolean> = {};
@@ -12,12 +12,15 @@ const is_key_down = (() => {
   return (key: string) => state.hasOwnProperty(key) && state[key] || false;
 })();
 
-const TEAM_COUNT = 4;
+let TEAM_COUNT = 4;
 const UPDATE_INTERVAL = 100;
 let server = "";
 async function init() {
   server = window.prompt("server") ?? "";
   document.body.style.margin = "0";
+  TEAM_COUNT = parseInt(await (await fetch(`${server}`, {
+      method: "PUT"
+    })).text());
   let updates: ((game: Game) => void)[] = [];
   for (let index = 0; index < TEAM_COUNT; index++) {
     let { element: element, update: update } = await createDisplay(TEAMS_NAMES[index]);

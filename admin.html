@@ -11,6 +11,8 @@
     canvas {
         object-fit: cover
     }
+
+ 
 </style>
 
 <link rel="stylesheet" href="src/style.css">
@@ -25,26 +27,30 @@
             style="padding: 10px;">freeze</button>
         <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=unfreeze')"
             style="padding: 10px;">unfreeze</button>
-            <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=reset')"
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=reset')"
             style="padding: 10px;">reset</button>
-            <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=save')"
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=save')"
             style="padding: 10px;">save</button>
-            <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=load')"
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=load')"
             style="padding: 10px;">load</button>
-            <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=loadauto')"
+        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=loadauto')"
             style="padding: 10px;">load auto</button>
         <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=down')"
             style="padding: 10px;">down</button>
         <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=right')"
             style="padding: 10px;">right</button>
         <input id="count" type="number"></input>
-        <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=addactions'+'&count='+ document.getElementById('count').value)"
+        <button
+            onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=addactions'+'&count='+ document.getElementById('count').value)"
             style="padding: 10px;">add actions</button>
-            <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=settick'+'&count='+ document.getElementById('count').value)"
+        <button
+            onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=settick'+'&count='+ document.getElementById('count').value)"
             style="padding: 10px;">set tick</button>
-            <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=setteam'+'&count='+ document.getElementById('count').value)"
+        <button
+            onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=setteam'+'&count='+ document.getElementById('count').value)"
             style="padding: 10px;">set team</button>
-            <button onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=setsave'+'&count='+ document.getElementById('count').value)"
+        <button
+            onclick="perform('game_id='+ document.getElementById('gameid').value+'&action=setsave'+'&count='+ document.getElementById('count').value)"
             style="padding: 10px;">set auto save</button>
 
     </div>
